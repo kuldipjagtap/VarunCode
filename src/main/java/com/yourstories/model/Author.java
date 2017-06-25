@@ -1,10 +1,19 @@
 package com.yourstories.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection="author")
 public class Author {
 
+	@Id
 	private String id;
-	private String display_name;
+	@NotBlank(message="displayName must not be blank")
+	private String displayName;
+	@NotBlank(message="firstname must not be blank")
 	private String firstname;
+	@NotBlank(message="lastname must not be blank")
 	private String lastname;
 	
 	public String getId() {
@@ -13,11 +22,11 @@ public class Author {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getDisplay_name() {
-		return display_name;
+	public String getDisplayName() {
+		return displayName;
 	}
-	public void setDisplay_name(String display_name) {
-		this.display_name = display_name;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 	public String getFirstname() {
 		return firstname;

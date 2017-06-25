@@ -2,13 +2,27 @@ package com.yourstories.model;
 
 import java.time.Instant;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection="post")
 public class Post {
 
+	@Id
 	private String id;
+	@NotBlank(message="title of the post must not be null")
+	@Size(max=100)
 	private String title;
+	@NotBlank(message="article of the post must not be null")
 	private String article;
-	private String title_clean;
+	private String titleClean;
+	@NotNull(message="date published must not be blank")
 	private Instant datePublished;
+	@NotBlank(message="imageurl must not be null")
 	private String bannerImage;
 	private Boolean featured;
 	private Boolean enabled;
@@ -33,11 +47,11 @@ public class Post {
 	public void setArticle(String article) {
 		this.article = article;
 	}
-	public String getTitle_clean() {
-		return title_clean;
+	public String getTitleClean() {
+		return titleClean;
 	}
-	public void setTitle_clean(String title_clean) {
-		this.title_clean = title_clean;
+	public void setTitleClean(String titleClean) {
+		this.titleClean = titleClean;
 	}
 	public Instant getDatePublished() {
 		return datePublished;

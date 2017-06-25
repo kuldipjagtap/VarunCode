@@ -2,12 +2,23 @@ package com.yourstories.model;
 
 import java.time.Instant;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection="category")
 public class Category {
 
+	@Id
 	private String id;
+	@NotBlank(message="name must not be blank")
+	@Size(min=5,max=25,message="name must have characters between 5 to 25")
 	private String name;
 	private String nameClean;
 	private Boolean enabled;
+	@NotBlank(message="dateCreated must not be blank")
 	private Instant dateCreated;
 	
 	public String getId() {

@@ -2,12 +2,20 @@ package com.yourstories.model;
 
 import java.time.Instant;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection="comment")
 public class Comment {
 
+	@Id
 	private String id;
+	@NotBlank(message="comment must not be null")
 	private String comment;
 	private Boolean markRead;
 	private Boolean enabled;
+	@NotBlank(message="date must not be null")
 	private Instant date;
 	
 	public String getId() {

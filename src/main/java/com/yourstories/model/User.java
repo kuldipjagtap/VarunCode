@@ -1,9 +1,23 @@
 package com.yourstories.model;
 
-public class User {
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public class User implements UserDetails{
 
 	private String id;
 	private String name;
+	private String username;
+	private String password;
+	private List<SimpleGrantedAuthority> authorities;
+	private boolean accountNonExpired;
+	private boolean accountNonLocked;
+	private boolean credentialsNonExpired;
+	private boolean enabled;
 	private String email;
 	private String website;
 	
@@ -30,6 +44,34 @@ public class User {
 	}
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return authorities;
+	}
+	@Override
+	public String getPassword() {
+		return password;
+	}
+	@Override
+	public String getUsername() {
+		return username;
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		return accountNonExpired;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		return accountNonLocked;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return credentialsNonExpired;
+	}
+	@Override
+	public boolean isEnabled() {
+		return enabled;
 	}
 	
 	
