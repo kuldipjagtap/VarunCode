@@ -3,13 +3,11 @@ package com.yourstories.controllers;
 import static com.yourstory.exceptions.util.ErrorAndExceptionUtil.getErrors;
 import static com.yourstory.exceptions.util.ErrorAndExceptionUtil.isEmpty;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
-import com.yourstories.services.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,14 +24,27 @@ import com.yourstories.exceptions.NoAccountsFoundException;
 import com.yourstories.exceptions.NoAuthorsFoundException;
 import com.yourstories.exceptions.PathVariableEmptyException;
 import com.yourstories.model.Account;
-import com.yourstories.services.AccountService;
+import com.yourstories.services.IAccountService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
+@Api(value="YourStories", description="Operations pertaining to User Account in YourStories application")
 public class AccountController {
 
 @Autowired
 IAccountService accountService;
 	
+	@ApiOperation(value = "View a list of available accounts", response = ResponseEntity.class)
+	 @ApiResponses(value = {
+	            @ApiResponse(code = 200, message = "Successfully retrieved list"),
+	            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	    })
 	@RequestMapping(value={"/api/v1/account"}, method={RequestMethod.GET}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> getAllAccounts() throws NoAccountsFoundException{
 		List<Account> fetchedAccounts = accountService.getAllAccounts();
