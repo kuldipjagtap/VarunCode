@@ -1,6 +1,8 @@
 package com.yourstories.model;
 
 import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,13 +23,17 @@ public class Post {
 	private String article;
 	private String titleClean;
 	@NotNull(message="date published must not be blank")
-	private Instant datePublished;
+	private Date datePublished;
 	@NotBlank(message="imageurl must not be null")
 	private String bannerImage;
 	private Boolean featured;
 	private Boolean enabled;
 	private Boolean commentsEnabled;
 	private Integer views;
+	private List<Author> authors;
+	private List<Category> categories;
+	private List<Related> relatedPosts;
+	private List<Tag> tags;
 	
 	public String getId() {
 		return id;
@@ -53,10 +59,10 @@ public class Post {
 	public void setTitleClean(String titleClean) {
 		this.titleClean = titleClean;
 	}
-	public Instant getDatePublished() {
+	public Date getDatePublished() {
 		return datePublished;
 	}
-	public void setDatePublished(Instant datePublished) {
+	public void setDatePublished(Date datePublished) {
 		this.datePublished = datePublished;
 	}
 	public String getBannerImage() {
@@ -89,6 +95,29 @@ public class Post {
 	public void setViews(Integer views) {
 		this.views = views;
 	}
-	
+	public List<Author> getAuthors() {
+		return authors;
+	}
+	public void setAuthors(List<Author> authors) {
+		this.authors = authors;
+	}
+	public List<Category> getCategories() {
+		return categories;
+	}
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+	public List<Related> getRelatedPosts() {
+		return relatedPosts;
+	}
+	public void setRelatedPosts(List<Related> relatedPosts) {
+		this.relatedPosts = relatedPosts;
+	}
+	public List<Tag> getTags() {
+		return tags;
+	}
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
 	
 }

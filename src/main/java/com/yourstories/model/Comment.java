@@ -11,6 +11,8 @@ public class Comment {
 
 	@Id
 	private String id;
+	@NotBlank(message="postId of the comment must not be null")
+	private String postId;
 	@NotBlank(message="comment must not be null")
 	private String comment;
 	private Boolean markRead;
