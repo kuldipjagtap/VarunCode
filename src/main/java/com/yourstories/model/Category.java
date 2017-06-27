@@ -1,6 +1,7 @@
 package com.yourstories.model;
 
 import java.time.Instant;
+import java.util.Date;
 
 import javax.validation.constraints.Size;
 
@@ -19,7 +20,7 @@ public class Category {
 	private String nameClean;
 	private Boolean enabled;
 	@NotBlank(message="dateCreated must not be blank")
-	private Instant dateCreated;
+	private Date dateCreated;
 	
 	public String getId() {
 		return id;
@@ -46,13 +47,12 @@ public class Category {
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
-	public Instant getDateCreated() {
+
+	public Date getDateCreated() {
 		return dateCreated;
 	}
-	public void setDateCreated(Instant dateCreated) {
+
+	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
-	
-	
-	
 }

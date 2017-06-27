@@ -26,12 +26,25 @@ import com.yourstories.exceptions.PathVariableEmptyException;
 import com.yourstories.model.Account;
 import com.yourstories.services.IAccountService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
+@Api(value="YourStories", description="Operations pertaining to User Account in YourStories application")
 public class AccountController {
 
 @Autowired
 IAccountService accountService;
 	
+	@ApiOperation(value = "View a list of available accounts", response = ResponseEntity.class)
+	 @ApiResponses(value = {
+	            @ApiResponse(code = 200, message = "Successfully retrieved list"),
+	            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	    })
 	@RequestMapping(value={"/api/v1/account"}, method={RequestMethod.GET}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> getAllAccounts() throws NoAccountsFoundException{
 		List<Account> fetchedAccounts = accountService.getAllAccounts();
@@ -125,3 +138,4 @@ IAccountService accountService;
 		return new ResponseEntity<Account>(headers, HttpStatus.OK);
 	}
 }
+
