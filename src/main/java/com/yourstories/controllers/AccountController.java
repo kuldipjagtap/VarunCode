@@ -3,13 +3,11 @@ package com.yourstories.controllers;
 import static com.yourstory.exceptions.util.ErrorAndExceptionUtil.getErrors;
 import static com.yourstory.exceptions.util.ErrorAndExceptionUtil.isEmpty;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
-import com.yourstories.services.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,7 +24,7 @@ import com.yourstories.exceptions.NoAccountsFoundException;
 import com.yourstories.exceptions.NoAuthorsFoundException;
 import com.yourstories.exceptions.PathVariableEmptyException;
 import com.yourstories.model.Account;
-import com.yourstories.services.AccountService;
+import com.yourstories.services.IAccountService;
 
 @RestController
 public class AccountController {
