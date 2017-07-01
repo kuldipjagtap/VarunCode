@@ -57,6 +57,13 @@ IAccountService accountService;
 	}
 	
 	
+	@ApiOperation(value = "fetch account details by username", response = ResponseEntity.class)
+	 @ApiResponses(value = {
+	            @ApiResponse(code = 200, message = "Successfully retrieved account details by username"),
+	            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	    })
 	@RequestMapping(value={"/api/v1/account/{username}"}, method={RequestMethod.GET}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> getAccount(@PathVariable("username") String username) throws NoAccountsFoundException, PathVariableEmptyException{
 		if(isEmpty(username)){
@@ -71,6 +78,14 @@ IAccountService accountService;
 		return new ResponseEntity<Account>(fetchedAccount, headers, HttpStatus.OK);
 	}
 	
+	
+	@ApiOperation(value = "create account", response = ResponseEntity.class)
+	 @ApiResponses(value = {
+	            @ApiResponse(code = 200, message = "Successfully created account"),
+	            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	    })
 	@RequestMapping(value={"/api/v1/account"}, method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> createAccount(@Valid @RequestBody Account account, Errors errors) throws NoAccountsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
@@ -88,6 +103,13 @@ IAccountService accountService;
 		return new ResponseEntity<Account>(fetchedAccount, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "update account", response = ResponseEntity.class)
+	 @ApiResponses(value = {
+	            @ApiResponse(code = 200, message = "Successfully updated account"),
+	            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	    })
 	@RequestMapping(value={"/api/v1/account"}, method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> updateAccount(@Valid @RequestBody Account account, Errors errors) throws NoAccountsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
@@ -105,6 +127,13 @@ IAccountService accountService;
 		return new ResponseEntity<Account>(fetchedAccount, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "delete account", response = ResponseEntity.class)
+	 @ApiResponses(value = {
+	            @ApiResponse(code = 200, message = "Successfully deleted account"),
+	            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	    })
 	@RequestMapping(value={"/api/v1/account"}, method={RequestMethod.DELETE}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> deleteAccount(@Valid @RequestBody Account account, Errors errors) throws NoAccountsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
@@ -122,6 +151,13 @@ IAccountService accountService;
 		return new ResponseEntity<Account>(headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "delete account by username", response = ResponseEntity.class)
+	 @ApiResponses(value = {
+	            @ApiResponse(code = 200, message = "Successfully deleted account by username"),
+	            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	    })
 	@RequestMapping(value={"/api/v1/account/{username}"}, method={RequestMethod.DELETE})
 	public ResponseEntity<?> deleteAccount(@PathVariable("username") String username) throws NoAuthorsFoundException{
 		if(isEmpty(username)){
