@@ -20,18 +20,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yourstories.exceptions.NoAuthorsFoundException;
 import com.yourstories.exceptions.NoPostsFoundException;
 import com.yourstories.exceptions.PathVariableEmptyException;
 import com.yourstories.model.Author;
 import com.yourstories.model.Post;
 import com.yourstories.services.IPostService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
+@Api(value="YourStories", description="Operations pertaining to Post in YourStories application")
 public class PostController {
 
 @Autowired IPostService postService;
 	
+	@ApiOperation(value = "View a list of available post ", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully retrieved list"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/post"}, method={RequestMethod.GET}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> getAllPost() throws NoPostsFoundException{
 		List<Post> fetchedPosts = postService.getAllPost();
@@ -43,6 +55,13 @@ public class PostController {
 		return new ResponseEntity<List<Post>>(fetchedPosts, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "fetch post by id", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully retrieved post by id"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/post/{id}"}, method={RequestMethod.GET}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> getPost(@PathVariable("id") String id) throws NoPostsFoundException, PathVariableEmptyException{
 		if(isEmpty(id)){
@@ -57,6 +76,13 @@ public class PostController {
 		return new ResponseEntity<Post>(fetchedPost, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "create post", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully created post"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/post"}, method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> createPost(@Valid @RequestBody Post post, Errors errors) throws NoPostsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
@@ -74,6 +100,13 @@ public class PostController {
 		return new ResponseEntity<Post>(fetchedPost, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "update post", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully updated post"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/post"}, method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> updatePost(@Valid @RequestBody Post post, Errors errors) throws NoPostsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
@@ -91,6 +124,13 @@ public class PostController {
 		return new ResponseEntity<Post>(fetchedPost, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "delete post", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully deleted post"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/post"}, method={RequestMethod.DELETE}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> deletePost(@Valid @RequestBody Post post, Errors errors) throws NoPostsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
@@ -108,6 +148,13 @@ public class PostController {
 		return new ResponseEntity<Author>(headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "delete post by id", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully deleted post by id"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/post/{id}"}, method={RequestMethod.DELETE})
 	public ResponseEntity<?> deleteAuthor(@PathVariable("id") String id) throws NoPostsFoundException{
 		if(isEmpty(id)){

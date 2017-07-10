@@ -20,19 +20,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yourstories.exceptions.NoAccountsFoundException;
-import com.yourstories.exceptions.NoAuthorsFoundException;
 import com.yourstories.exceptions.NoCommentsFoundException;
 import com.yourstories.exceptions.PathVariableEmptyException;
-import com.yourstories.model.Account;
 import com.yourstories.model.Comment;
 import com.yourstories.services.ICommentService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
+@Api(value="YourStories", description="Operations pertaining to Comment in YourStories application")
 public class CommentController {
 
 @Autowired ICommentService commentService;
 	
+	@ApiOperation(value = "View a list of all comments ", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully retrieved list"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/comment"}, method={RequestMethod.GET}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> getAllComments() throws NoCommentsFoundException{
 		List<Comment> fetchedComments = commentService.getAllComment();
@@ -44,6 +54,13 @@ public class CommentController {
 		return new ResponseEntity<List<Comment>>(fetchedComments, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "fetch comment by id", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully retrieved comment by id"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/comment/{id}"}, method={RequestMethod.GET}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> getComment(@PathVariable("id") String id) throws NoCommentsFoundException, PathVariableEmptyException{
 		if(isEmpty(id)){
@@ -58,6 +75,13 @@ public class CommentController {
 		return new ResponseEntity<Comment>(fetchedComment, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "create comment", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully created comment"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/comment"}, method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> createComment(@Valid @RequestBody Comment comment, Errors errors) throws NoCommentsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
@@ -75,6 +99,13 @@ public class CommentController {
 		return new ResponseEntity<Comment>(fetchedComment, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "update comment", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully updated comment"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/comment"}, method={RequestMethod.PUT}, consumes={MediaType.APPLICATION_JSON_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> updateComment(@Valid @RequestBody Comment comment, Errors errors) throws NoCommentsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
@@ -92,6 +123,13 @@ public class CommentController {
 		return new ResponseEntity<Comment>(fetchedComment, headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "delete comment", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully deleted comment"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/comment"}, method={RequestMethod.DELETE}, consumes={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> deleteComment(@Valid @RequestBody Comment comment, Errors errors) throws NoCommentsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
@@ -109,6 +147,13 @@ public class CommentController {
 		return new ResponseEntity<Comment>(headers, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "delete comment by id", response = ResponseEntity.class)
+	@ApiResponses(value = {
+	           @ApiResponse(code = 200, message = "Successfully deleted comment by id"),
+	           @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	   })
 	@RequestMapping(value={"/api/v1/comment/{id}"}, method={RequestMethod.DELETE})
 	public ResponseEntity<?> deleteAccount(@PathVariable("id") String id) throws NoCommentsFoundException{
 		if(isEmpty(id)){
