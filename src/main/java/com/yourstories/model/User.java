@@ -1,18 +1,21 @@
 package com.yourstories.model;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.data.annotation.Transient;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class User implements UserDetails{
+public class User implements UserDetails,CredentialsContainer,Cloneable{
 
 	private String id;
 	private String name;
 	private String username;
-	private String password;
+	private byte[] hashedPassword;
 	private List<SimpleGrantedAuthority> authorities;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
@@ -46,13 +49,20 @@ public class User implements UserDetails{
 		this.username = username;
 	}
 
-	@Override
-	public String getPassword() {
-		return password;
+	public byte[] getHashedPassword() {
+		return hashedPassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setHashedPassword(byte[] hashedPassword) {
+		this.hashedPassword = hashedPassword;
+	}
+
+	@Transient
+	@Override
+	public String getPassword()
+	{
+		return this.getHashedPassword() == null ? null :
+				new String(this.getHashedPassword(), StandardCharsets.UTF_8);
 	}
 
 	@Override
@@ -114,5 +124,10 @@ public class User implements UserDetails{
 
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+
+	@Override
+	public void eraseCredentials() {
+
 	}
 }

@@ -1,11 +1,13 @@
 package com.yourstories.services;
 
+import com.yourstories.model.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
-import com.yourstories.model.Author;
-import com.yourstories.model.User;
-
-public interface IUserService {
+public interface IUserService extends UserDetailsService{
 
 	List<User> getAllUsers();
 	User getUser(String id);
@@ -13,4 +15,9 @@ public interface IUserService {
 	User updateUser(User author);
 	void deleteUser(User author);
 	void deleteUser(String id);
+	void saveUser(
+			@NotNull(message = "{validate.authenticate.saveUser}") @Valid
+					User principal,
+			String newPassword
+	);
 }
