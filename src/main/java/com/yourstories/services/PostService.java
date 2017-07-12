@@ -1,17 +1,23 @@
 package com.yourstories.services;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.yourstories.model.Post;
 import com.yourstories.repositories.IPostRepository;
-import org.springframework.stereotype.Service;
 
 @Service
 public class PostService implements IPostService{
 
 	@Autowired IPostRepository postRepository;
+	@Autowired GridFsTemplate gridfsTemplate;
 	
 	@Override
 	public List<Post> getAllPost() {
@@ -26,9 +32,16 @@ public class PostService implements IPostService{
 	}
 
 	@Override
-	public Post createPost(Post post) {
+	public Post createPost(MultipartFile file, Post post) throws IOException {
 		
-		return postRepository.createPost(post);
+		Post createdPost = postRepository.createPost(post);
+		
+		DBObject metaData = new BasicDBObject();
+		metaData.put("postId", createdPost.getId());
+		
+		gridfsTemplate.store(file.getInputStream(),file.getOriginalFilename(),file.getContentType(), metaData);
+		
+		return createdPost;
 	}
 
 	@Override
