@@ -8,7 +8,7 @@ public interface IPostRepository {
 
 	List<Post> getAllPost();
 	Post getPost(String id);
-	Post createPost(Post author);
+	Post createPost(Post post);
 	Post updatePost(Post author);
 	void deletePost(Post author);
 	void deletePost(String id);

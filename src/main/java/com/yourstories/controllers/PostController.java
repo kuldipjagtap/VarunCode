@@ -3,6 +3,7 @@ package com.yourstories.controllers;
 import static com.yourstory.exceptions.util.ErrorAndExceptionUtil.getErrors;
 import static com.yourstory.exceptions.util.ErrorAndExceptionUtil.isEmpty;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yourstories.exceptions.NoPostsFoundException;
 import com.yourstories.exceptions.PathVariableEmptyException;
@@ -83,14 +86,14 @@ public class PostController {
 	           @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
 	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
 	   })
-	@RequestMapping(value={"/api/v1/post"}, method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<?> createPost(@Valid @RequestBody Post post, Errors errors) throws NoPostsFoundException{
+	@RequestMapping(value={"/api/v1/post"}, method={RequestMethod.POST}, consumes={"multipart/forma-data"},produces={MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<?> createPost(@Valid @RequestPart("file") MultipartFile file,@RequestPart("post") Post post, Errors errors) throws NoPostsFoundException,IOException{
 		Map<String, String> fieldErrors = getErrors(errors);
 		if(fieldErrors != null){
 			HttpHeaders headers = new HttpHeaders();
 			return new ResponseEntity<Map<String, String>>(fieldErrors, headers, HttpStatus.BAD_REQUEST);
 		}
-		Post fetchedPost = postService.createPost(post);
+		Post fetchedPost = postService.createPost(file,post);
 		//throw an exception if the database does not contain any author yet...
 		if(fetchedPost == null){
 			throw new NoPostsFoundException("No Posts found in database.");
