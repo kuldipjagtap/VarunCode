@@ -3,6 +3,7 @@ package com.yourstories.controllers;
 import static com.yourstory.exceptions.util.ErrorAndExceptionUtil.getErrors;
 import static com.yourstory.exceptions.util.ErrorAndExceptionUtil.isEmpty;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -173,5 +175,24 @@ IAccountService accountService;
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<Account>(headers, HttpStatus.OK);
 	}
+
+	@ApiOperation(value = "Expose user details to UI for authorities and roles", response = ResponseEntity.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Successfully exposed user"),
+			@ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+			@ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+			@ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	})
+	@RequestMapping(value={"/api/v1/user/"}, method={RequestMethod.DELETE})
+	public ResponseEntity<?> getUser(Principal principal) throws UsernameNotFoundException{
+		if(principal == null){
+			throw new UsernameNotFoundException("User does not exist.");
+		}
+
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<Principal>(principal, HttpStatus.OK);
+	}
+
+
 }
 

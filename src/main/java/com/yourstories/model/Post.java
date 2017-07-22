@@ -35,6 +35,7 @@ public class Post implements Serializable{
 	private List<Category> categories;
 	private List<Related> relatedPosts;
 	private List<Tag> tags;
+	private User user;
 
 	public ObjectId getId() {
 		return id;
@@ -146,5 +147,13 @@ public class Post implements Serializable{
 
 	public void setTags(List<Tag> tags) {
 		this.tags = tags;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

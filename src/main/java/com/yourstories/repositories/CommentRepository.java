@@ -21,6 +21,11 @@ public class CommentRepository implements ICommentRepository{
 	}
 
 	@Override
+	public List<Comment> getCommentsByPost(String postId) {
+		return commentRepositoryDB.getByPostId(postId);
+	}
+
+	@Override
 	public Comment getComment(String id) {
 		
 		return commentRepositoryDB.findOne(id);

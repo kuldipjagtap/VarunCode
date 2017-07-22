@@ -15,9 +15,9 @@ public interface IUserService extends UserDetailsService{
 	User updateUser(User author);
 	void deleteUser(User author);
 	void deleteUser(String id);
-	void saveUser(
+	/*void saveUser(
 			@NotNull(message = "{validate.authenticate.saveUser}") @Valid
 					User principal,
 			String newPassword
-	);
+	);*/
 }

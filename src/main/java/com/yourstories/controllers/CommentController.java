@@ -8,11 +8,13 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.yourstories.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,16 +85,17 @@ public class CommentController {
 	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
 	   })
 	@RequestMapping(value={"/api/v1/comment"}, method={RequestMethod.POST}, consumes={MediaType.APPLICATION_JSON_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<?> createComment(@Valid @RequestBody Comment comment, Errors errors) throws NoCommentsFoundException{
+	public ResponseEntity<?> createComment(@AuthenticationPrincipal User user, @Valid @RequestBody Comment comment, Errors errors) throws NoCommentsFoundException{
 		Map<String, String> fieldErrors = getErrors(errors);
 		if(fieldErrors != null){
 			HttpHeaders headers = new HttpHeaders();
 			return new ResponseEntity<Map<String, String>>(fieldErrors, headers, HttpStatus.BAD_REQUEST);
 		}
+		comment.setUser(user);
 		Comment fetchedComment = commentService.createComment(comment);
 		//throw an exception if the database does not contain any author yet...
 		if(fetchedComment == null){
-			throw new NoCommentsFoundException("No Account found in database.");
+			throw new NoCommentsFoundException("No Comments found in database.");
 		}
 		//return the entity to the client...
 		HttpHeaders headers = new HttpHeaders();
@@ -168,5 +171,28 @@ public class CommentController {
 		//return the entity to the client...
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<Comment>(headers, HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "get comments by postId", response = ResponseEntity.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Successfully fetched comments by postId"),
+			@ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+			@ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+			@ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	})
+	@RequestMapping(value={"/api/v1/comment/post/{postId}"}, method={RequestMethod.GET})
+	public ResponseEntity<?> getCommentsByPost(@PathVariable("postId") String id) throws NoCommentsFoundException{
+		if(isEmpty(id)){
+			throw new NoCommentsFoundException("Id must not be null or empty.");
+		}
+
+		List<Comment> fetchedComments = commentService.getCommentsByPost(id);
+		//throw an exception if the database does not contain any author yet...
+		if(fetchedComments == null){
+			throw new NoCommentsFoundException("No Comments found in database.");
+		}
+		//return the entity to the client...
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<List<Comment>>(fetchedComments,headers, HttpStatus.OK);
 	}
 }

@@ -8,6 +8,7 @@ import com.yourstories.model.Comment;
 public interface ICommentRepository {
 
 	List<Comment> getAllComment();
+	List<Comment> getCommentsByPost(String postId);
 	Comment getComment(String id);
 	Comment createComment(Comment comment);
 	Comment updateComment(Comment comment);

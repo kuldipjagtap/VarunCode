@@ -9,11 +9,13 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.yourstories.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -87,12 +89,13 @@ public class PostController {
 	           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
 	   })
 	@RequestMapping(value={"/api/v1/post"}, method={RequestMethod.POST}, consumes={"multipart/forma-data"},produces={MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<?> createPost(@Valid @RequestPart("file") MultipartFile file,@RequestPart("post") Post post, Errors errors) throws NoPostsFoundException,IOException{
+	public ResponseEntity<?> createPost(@AuthenticationPrincipal User user, @Valid @RequestPart("file") MultipartFile file, @RequestPart("post") Post post, Errors errors) throws NoPostsFoundException,IOException{
 		Map<String, String> fieldErrors = getErrors(errors);
 		if(fieldErrors != null){
 			HttpHeaders headers = new HttpHeaders();
 			return new ResponseEntity<Map<String, String>>(fieldErrors, headers, HttpStatus.BAD_REQUEST);
 		}
+		post.setUser(user);
 		Post fetchedPost = postService.createPost(file,post);
 		//throw an exception if the database does not contain any author yet...
 		if(fetchedPost == null){

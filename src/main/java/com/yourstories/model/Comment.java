@@ -21,6 +21,7 @@ public class Comment {
 	private Boolean enabled;
 	@NotBlank(message="date must not be null")
 	private Date createdDate;
+	private User user;
 
 	public ObjectId getId() {
 		return id;
@@ -68,5 +69,13 @@ public class Comment {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
