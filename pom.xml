@@ -194,6 +194,29 @@
 						</excludes>
 					</configuration>
 				</plugin>
+			<!--&lt;!&ndash;Generate typescript interfaces from java classes&ndash;&gt;
+			<plugin>
+				<groupId>cz.habarta.typescript-generator</groupId>
+				<artifactId>typescript-generator-maven-plugin</artifactId>
+				<version>1.25.322</version>
+				<executions>
+					<execution>
+						<id>generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>process-classes</phase>
+						<configuration>
+							<jsonLibrary>jackson2</jsonLibrary>
+							<classes>
+								<class>com.yourstories.model.Comment</class>
+							</classes>
+							<outputFile>target/rest.d.ts</outputFile>
+							<outputKind>module</outputKind>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>-->
 			</plugins>
 	</build>
 
